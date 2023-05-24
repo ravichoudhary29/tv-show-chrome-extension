@@ -7,20 +7,9 @@ chrome.runtime.onInstalled.addListener((details) => {
 
     chrome.contextMenus.onClicked.addListener((event) => {
         console.log(event);
-    });
-
-    chrome.contextMenus.create({
-        title: "Test Context Menu 2",
-        id: "contextMenu2",
-        parentId: "contextMenu1",
-        contexts: ["page", "selection"],
-    });
-
-    chrome.contextMenus.create({
-        title: "Test Context Menu 3",
-        id: "contextMenu3",
-        parentId: "contextMenu1",
-        contexts: ["page", "selection"],
+        chrome.tabs.create({
+            url: "https://www.imdb.com/chart/toptv/",
+        });
     });
 });
 
