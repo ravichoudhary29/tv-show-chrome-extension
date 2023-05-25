@@ -3,19 +3,31 @@ chrome.runtime.onInstalled.addListener((details) => {
         shows: [],
     });
     chrome.contextMenus.create({
-        title: "Test Context Menu 1",
+        title: "Search TV Show",
         id: "contextMenu1",
+        contexts: ["page", "selection"],
+    });
+    chrome.contextMenus.create({
+        title: "Read this text",
+        id: "contextMenu2",
         contexts: ["page", "selection"],
     });
 
     chrome.contextMenus.onClicked.addListener((event) => {
-        fetch(`http://api.tvmaze.com/search/shows?q=${event.selectionText}`)
-            .then((res) => res.json())
-            .then((data) => {
-                console.log(data);
-                chrome.storage.local.set({
-                    shows: data,
+        if (event.menuItemId === "contextMenu1") {
+            fetch(`http://api.tvmaze.com/search/shows?q=${event.selectionText}`)
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log(data);
+                    chrome.storage.local.set({
+                        shows: data,
+                    });
                 });
+        } else if (event.menuItemId === "contextMenu2") {
+            chrome.tts.speak(event.selectionText, {
+                lang: "zh-CN",
+                rate: 0.8,
             });
+        }
     });
 });
